@@ -4,29 +4,12 @@
 
 .main {
   min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  
 }
 
-.footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
 
 .title a {
   color: #0070f3;
@@ -56,27 +39,15 @@
   font-size: 1.5rem;
 }
 
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
-}
+
 
 .grid {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
 }
 
 .card {
   margin: 1rem;
   padding: 1.5rem;
-  text-align: left;
   color: inherit;
   text-decoration: none;
   border: 1px solid #eaeaea;
