@@ -13,13 +13,14 @@ const SearchResult =({returnObj, theLandId} )=>{
     }
 
     const makeRequest = async() =>{
+        e.preventDefault();
         if (typeof window.ethereum !== 'undefined') {
             await connectWallet()
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner()
             const landContract = new ethers.Contract(landRegistrationAddress, LandRegistration.abi, signer)
             const transaction = await landContract.requestToLandOwner(theLandId)
-            alert("you have successfully made a request to the land owner")
+            alert("you have successfully made a request to the land")
         }
     }
 

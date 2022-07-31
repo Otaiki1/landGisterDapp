@@ -142,7 +142,7 @@ contract LandRegistration{
         require(Land[_lanId].reqStatus == ReqStatus.Approved, "The Owner of the land hasnt approved the sales");
         require(msg.value >= Land[_lanId].priceSelling, "The price should be more tha or equal to the selling price");
         require(Land[_lanId].currentOwner != msg.sender, "The Owner of the land cant buyhisownland");
-        
+
         address prevOwner = Land[_lanId].currentOwner;
         removeOwnership(Land[_lanId].currentOwner, _lanId);
         iToken.transferToken(Land[_lanId].currentOwner, msg.sender, _lanId);
