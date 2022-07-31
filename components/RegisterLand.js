@@ -2,7 +2,7 @@ import { useState } from "react";
 import {ethers} from "ethers";
 import LandRegistration from './artifacts/contracts/LandRegistration.sol/LandRegistration.json';
 
-const landRegistrationAddress = "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853";
+const landRegistrationAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
 
 export default function RegisterLand(){
     const[state, setState] = useState('')
@@ -50,7 +50,7 @@ export default function RegisterLand(){
             const transaction = await landContract.register(state, lga, location, plotNumber, ethers.utils.parseUnits(priceSelling), available);
             const status = await transaction.wait();
             const assets = await getTheAssets();
-            setAssets(assets);
+            console.log(assets);
         }
     }
 
