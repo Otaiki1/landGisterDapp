@@ -54,7 +54,7 @@ contract Token is ERC721, ERC721URIStorage, Ownable {
         address to,
         uint256 tokenId
     ) external {
-        transferFrom(from, to, tokenId);
+        _transfer(from, to, tokenId);
     }
 
     // function purchase(string memory _eventId, uint _totaltokens) external {}

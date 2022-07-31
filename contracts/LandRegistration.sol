@@ -39,13 +39,17 @@ contract LandRegistration{
         uint[] assetList;
     }
 
-   
+    event RegisterLand(address indexed _addr1, uint256 indexed _landId, uint256 indexed _priceSelling);
+    event PurchaseLand(address indexed _buyer, address indexed _seller, uint256 indexed _landId);
+    event Withdraw(address indexed _withdrawer, uint256 indexed _amount);
+
 
     // a mapping that links the unique number to the specific land property
     mapping(uint => LandDetails) Land;
     // the address of the person that deploys the contract
     address Deployer;
-
+    //a mapping that maps accounts to ther balances
+    mapping(address => uint256) private _balancesOf;
     // a mapping that maps each address to profiles(list of all lands the user has)
     mapping(address => profiles) profile ;
     //this constructor ensures that the deployer is the person who deployed the contract and is some sort of admin 
@@ -63,7 +67,7 @@ contract LandRegistration{
     //Registration of land details
     function register(string memory _state,string memory _lga,
         string memory _location,
-        uint _plotNumber) public returns(bool, uint256){
+        uint _plotNumber, uint _priceSelling, bool _isAvailable) public returns(uint256){
             iToken.safeMint(msg.sender, _state, _lga, _location, _plotNumber) ;
             
             uint _lanId =  checkId(msg.sender);  
@@ -72,13 +76,14 @@ contract LandRegistration{
             Land[_lanId].location = _location;
             Land[_lanId].plotNumber = _plotNumber;
             Land[_lanId].currentOwner = msg.sender;
-            Land[_lanId].priceSelling = 1000000000000000000;
+            Land[_lanId].priceSelling = _priceSelling;
+            Land[_lanId].isAvailable = _isAvailable;
 
 
             profile[msg.sender].assetList.push(_lanId);
             
-           
-            return (true, _lanId);
+            emit RegisterLand(msg.sender, _lanId, _priceSelling);
+            return _lanId;
             
         }
        
@@ -106,6 +111,7 @@ contract LandRegistration{
     //To push a request to the land owner
     function requestToLandOwner(uint _lanId) public{
         require(Land[_lanId].isAvailable, "This land is not available");
+        require(Land[_lanId].currentOwner != msg.sender, "You cant request your own land");
         Land[_lanId].requester = msg.sender;
         Land[_lanId].isAvailable = false;
         Land[_lanId].reqStatus = ReqStatus.Pending;
@@ -139,16 +145,19 @@ contract LandRegistration{
     function purchaseLand(uint _lanId) external payable{
         require(Land[_lanId].reqStatus == ReqStatus.Approved, "The Owner of the land hasnt approved the sales");
         require(msg.value >= Land[_lanId].priceSelling, "The price should be more tha or equal to the selling price");
+        require(Land[_lanId].currentOwner != msg.sender, "The Owner of the land cant buyhisownland");
         
-        (bool success, ) = payable(Land[_lanId].currentOwner).call{value: msg.value}("");
-        require(success, "failed to send");
+        address prevOwner = Land[_lanId].currentOwner;
         removeOwnership(Land[_lanId].currentOwner, _lanId);
         iToken.transferToken(Land[_lanId].currentOwner, msg.sender, _lanId);
+        _balancesOf[msg.sender] = msg.value;
         Land[_lanId].currentOwner = msg.sender;
         Land[_lanId].isAvailable = false;
         Land[_lanId].requester = address(0);
         Land[_lanId].reqStatus = ReqStatus.Default;
         profile[msg.sender].assetList.push(_lanId);
+
+        emit PurchaseLand(prevOwner, msg.sender, _lanId);
         
     }
     
@@ -170,6 +179,21 @@ contract LandRegistration{
             }
         }
         return i;
+    }
+
+    function withdraw() external returns(bool){
+        
+        require(_balancesOf[msg.sender] != 0, "You dont have funds to withdraw!");
+        uint256 withdrawAmount = _balancesOf[msg.sender];
+        _balancesOf[msg.sender] -= withdrawAmount;
+        (bool success, ) = payable(msg.sender).call{value: withdrawAmount}("");
+        require(success, "failed to send");
+        emit Withdraw(msg.sender, withdrawAmount);
+        return true;
+    }   
+
+    function viewBalance(address _addr) external view returns( uint256){
+        return _balancesOf[_addr];
     }
 
   
