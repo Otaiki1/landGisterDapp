@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import {useState} from "react";
 import LandRegistration from '../components/artifacts/contracts/LandRegistration.sol/LandRegistration.json';
 
-const landRegistrationAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
+const landRegistrationAddress = "0x7d15e2D849c7A5913cF20aA01802b31946e7265c";
 export default function Owner(){
 
     const[landId, setLandId] = useState(Number);

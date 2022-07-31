@@ -2,7 +2,7 @@ import { useState } from "react";
 import {ethers} from "ethers";
 import LandRegistration from '../components/artifacts/contracts/LandRegistration.sol/LandRegistration.json';
 
-const landRegistrationAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
+const landRegistrationAddress = "0x7d15e2D849c7A5913cF20aA01802b31946e7265c";
 
 const SearchResult =({returnObj, theLandId} )=>{
 

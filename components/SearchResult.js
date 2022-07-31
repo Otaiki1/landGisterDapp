@@ -1,6 +1,5 @@
 
 export default function SearchResult({returnObj}){
-    console.log(returnObj)
     return(
         <div className="card">
             

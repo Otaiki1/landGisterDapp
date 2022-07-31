@@ -4,10 +4,11 @@ import LandRegistration from './artifacts/contracts/LandRegistration.sol/LandReg
 import SearchResult from './SearchResult'
 const landRegistrationAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
 
+
 export default function RegisterLand(){
 
     const[landId, setLandId] = useState(Number)
-    const[returnObject, setReturnObject] = useState([])
+    const[returnObject, setReturnObject] = useState()
 
     const connectWallet = async() => {
         const { ethereum } = window;

@@ -21,8 +21,11 @@ export default function Header(){
                             <a className="btn btn-dark"> Check Status</a>
                         </Link>
                    </div>
-                   
-                    <div className="col-md-3 p-1"> <a className="btn btn-dark">View Profile</a></div>
+                   <div className="col-md-3 p-1 ">
+                        <Link href="/profile" passRef>
+                            <a className="btn btn-dark"> View Profile</a>
+                        </Link>
+                   </div>
                 </nav>
             </header>
         </>
