@@ -100,8 +100,13 @@ contract LandRegistration{
                 Land[_lanId].reqStatus);
     }
     // the buyer function checks to show details of the land to the buyer
-    function buyer(uint _lanId) public view returns(address, uint, bool, address, ReqStatus){
-        return (Land[_lanId].currentOwner,
+    function buyer(uint _lanId) public view returns(string memory, string memory, string memory, uint256, address, uint, bool, address, ReqStatus){
+        return (
+                Land[_lanId].state,
+                Land[_lanId].lga,
+                Land[_lanId].location,
+                Land[_lanId].plotNumber,
+                Land[_lanId].currentOwner,
                 Land[_lanId].priceSelling,
                 Land[_lanId].isAvailable,
                 Land[_lanId].requester,
