@@ -10,7 +10,7 @@ export default function Owner(){
 
     const connectWallet = async() => {
         const { ethereum } = window;
-        let check = await ethereum.request({method: 'eth_requestAccounts'});
+        let check = await ethereum.request({method: 'eth_requestAccounts' });
         await check;
     }
 
@@ -30,7 +30,7 @@ export default function Owner(){
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner()
             const landContract = new ethers.Contract(landRegistrationAddress, LandRegistration.abi, signer)
-            const transaction = await landContract.processRequest(landId, 2)
+            const transaction = await landContract.processRequest(landId, 3)
             alert("You have accepted the request")
         }
     }
@@ -40,7 +40,7 @@ export default function Owner(){
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner()
             const landContract = new ethers.Contract(landRegistrationAddress, LandRegistration.abi, signer)
-            const transaction = await landContract.processRequest(landId, 3)
+            const transaction = await landContract.processRequest(landId, 2)
             alert("you have rejected the request")
         }
     }

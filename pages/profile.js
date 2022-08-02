@@ -19,8 +19,11 @@ export default function Owner(){
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             const signer = provider.getSigner()
             const landContract = new ethers.Contract(landRegistrationAddress, LandRegistration.abi, signer)
-            const transaction = await landContract.checkBalance(signer.address)
-            setBalance(transaction)
+            const signerAddress = await signer.getAddress();
+            console.log(signerAddress);
+            const transaction = await landContract.viewBalance(signerAddress)
+            const data = ethers.utils.arrayify(transaction._hex)[0]
+            setBalance(data+"Ether");
         }
     }
     const withdrawBalance = async() =>{
@@ -39,8 +42,8 @@ export default function Owner(){
         <>
         <div className="row p-5">
             <div className="col-md-6">
-                <button className="btn btn-lg w-100 text-white border-white" onClick={() => checkBalance()}>Check Balance</button>
-                <p>{balance}</p>
+                <button className="btn btn-lg w-50 text-white border-white" onClick={() => checkBalance()}>Check Balance</button><span className="text-white display-3">{balance}</span>
+                
             </div>
         </div>
         <div className="row">

@@ -2,7 +2,7 @@ import { useState } from "react";
 import {ethers} from "ethers";
 import LandRegistration from './artifacts/contracts/LandRegistration.sol/LandRegistration.json';
 
-const landRegistrationAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
+const landRegistrationAddress = "0x7d15e2D849c7A5913cF20aA01802b31946e7265c";
 
 export default function RegisterLand(){
     const[state, setState] = useState('')
@@ -11,7 +11,7 @@ export default function RegisterLand(){
     const[priceSelling, setPriceSelling] = useState(Number)
     const[plotNumber, setPlotNumber] = useState(Number)
     const[available, setAvailability] = useState('')
-    // const[assets, setAssets] = useState();
+    const[theAssets, setAssets] = useState([]);
 
     const connectWallet = async() => {
         const { ethereum } = window;
@@ -23,11 +23,12 @@ export default function RegisterLand(){
 
         if (typeof window.ethereum !== 'undefined') {
             await connectWallet()
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const provider = new ethers.providers.Web3Provider(window.ethereum, "rinkeby");
             const signer = provider.getSigner()
             const landContract = new ethers.Contract(landRegistrationAddress, LandRegistration.abi, signer)
             try {
                 const data = await landContract.viewAssets()
+                console.log(data)
                 const assetsMap = data.map(asset => ethers.utils.arrayify(asset._hex)[0]);
                 return assetsMap;
               } catch (err) {
@@ -50,7 +51,7 @@ export default function RegisterLand(){
             const transaction = await landContract.register(state, lga, location, plotNumber, ethers.utils.parseUnits(priceSelling), available);
             const status = await transaction.wait();
             const assets = await getTheAssets();
-            console.log(assets);
+            setAssets(assets);
         }
     }
 
@@ -94,24 +95,24 @@ export default function RegisterLand(){
             <div className="row p-3">
                 <button className="btn btn-lg w-100 text-white border-white" onClick={(e) => submitEvent(e)}>Submit</button>
             </div>
-            {/* <div className={assets ?"row p-3": "d-none"}>
-               <SuccessfulReg id={assets}/>
-            </div> */}
+             <div className={theAssets.length > 0 ?"row p-3": "d-none"}>
+               <SuccessfulReg id={theAssets}/>
+            </div> 
         </form>
         
     )
 }
 
-// function SuccessfulReg({id}){
+function SuccessfulReg({id}){
     
-//     return(
-//         <div>
-//         <p>You have successfully registered this land and your assets are </p>
-//         <ul>
-//         {
-//             id.map((i, index) => <li key={index}>Land with id of # {i}</li>)
-//         }
-//     </ul>
-//     </div>
-//     )
-// }
+    return(
+        <div>
+        <p>You have successfully registered this land and your assets are </p>
+        <ul>
+        {
+            id.map((i, index) => <li key={index}>Land with id of # {i}</li>)
+        }
+    </ul>
+    </div>
+    )
+}

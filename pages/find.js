@@ -13,7 +13,6 @@ const SearchResult =({returnObj, theLandId} )=>{
     }
 
     const makeRequest = async() =>{
-        e.preventDefault();
         if (typeof window.ethereum !== 'undefined') {
             await connectWallet()
             const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -24,7 +23,7 @@ const SearchResult =({returnObj, theLandId} )=>{
         }
     }
 
-    console.log(returnObj)
+    // console.log(returnObj)
     return(
         <div className="card">
             
@@ -47,11 +46,11 @@ const SearchResult =({returnObj, theLandId} )=>{
                         <div className="row">
                             <p>Location: <span>{returnObj[2]}</span></p>
                         </div>
-                        {/* <div className="row">
+                         {/* <div className="row">
                             <p>Plot Number: <span>{ethers.utils.arrayify(returnObj[3])[0]}</span></p>
                         </div>  */}
                         {/* <div className="row">
-                            <p>Price Selling: <span>{ethers.utils.parseEther(ethers.utils.arrayify(returnObj[5])[0]).toString()}</span></p>
+                            <p>Price Selling: <span>{let retVal = parseInt(returnObj[5]._hex, 16);let retStr = retVal.toString(); console.log(ethers.utils.parseEther(retStr))}</span></p>
                         </div>  */}
                         <div className="row">
                             <p>Person Making request: <span>{returnObj[7]}</span></p>
@@ -97,7 +96,7 @@ export default function RegisterLand(){
                 setReturnObject(transaction);
             }
     }
-    console.log(returnObject)
+    // console.log(returnObject)
     return(
         <>
             <form className="text-white p-5">
